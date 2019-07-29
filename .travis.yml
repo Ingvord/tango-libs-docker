@@ -16,6 +16,10 @@ before_deploy:
 
 deploy:
   - provider: script
+    script: docker push tangocs/tango-libs:latest
+    on:
+      all_branches: true
+  - provider: script
     script: docker push tangocs/tango-libs:${TANGO_DISTRIBUTION_VERSION}
     on:
       all_branches: true
