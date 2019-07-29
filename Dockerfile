@@ -33,10 +33,3 @@ RUN runtimeDeps='libzmq5 libomniorb4-1 libcos4-1 libmariadbclient18 sudo' \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends $runtimeDeps \
     && rm -rf /var/lib/apt/lists/* \
     && rm -f /etc/apt/apt.conf.d/30proxy
-
-RUN useradd --create-home --home-dir /home/tango tango
-
-RUN echo "tango ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/tango \
-    && chmod 0440 /etc/sudoers.d/tango
-
-USER tango
