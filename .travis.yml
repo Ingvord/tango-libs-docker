@@ -1,0 +1,31 @@
+language: bash
+
+notifications:
+  email: false
+
+services:
+  - docker
+  - mysql
+
+script:
+  - source tango.properties
+  - docker build --build-arf TANGO_SOURCE_DISTRIBUTION_VER=${TANGO_SOURCE_DISTRIBUTION_VER} --build-arf TANGO_LIB_VER=${TANGO_LIB_VER} -t tangocs/tango-libs .
+  - docker run --name tango-build -dit tangocs/tango-libs
+  - docker exec tango-build ./configure --disable-java --with-mysql-ho=127.0.0.1 --with-mysql-admin=root --with-mysql-admin-passwd=""
+  - docker exec tango-build make
+  - docker exec tango-build make install
+
+before_deploy:
+  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+  - docker tag tangocs/tango-cs tangocs/tango-cs:${TRAVIS_BRANCH}
+  - docker tag tangocs/tango-cs tangocs/tango-cs:latest
+
+deploy:
+  - provider: script
+    script: docker push tangocs/tango-cs:latest
+    on:
+      branch: master
+  - provider: script
+    script: docker push tangocs/tango-cs:${TRAVIS_BRANCH}
+    on:
+      tags: true
