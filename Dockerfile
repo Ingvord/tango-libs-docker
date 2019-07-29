@@ -31,5 +31,4 @@ RUN runtimeDeps='libzmq5 libomniorb4-1 libcos4-1 libmariadbclient18 sudo' \
     && echo "Proxy detected on docker host - using for this build" || echo "No proxy detected on docker host" \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends $runtimeDeps \
-    && rm -rf /var/lib/apt/lists/* \
     && rm -f /etc/apt/apt.conf.d/30proxy
