@@ -12,7 +12,7 @@ script:
 
 before_deploy:
   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
-  - docker tag tangocs/tango-cs tangocs/tango-libs:${TANGO_DISTRIBUTION_VERSION}
+  - docker tag tangocs/tango-libs tangocs/tango-libs:${TANGO_DISTRIBUTION_VERSION}
 
 deploy:
   - provider: script
